@@ -139,7 +139,7 @@ def view_transactions():
     cursor.close()
 
   
-
+''' - For CLI 
 while True:
     print("")
     print("Hello! Welcome to your C2C local bank!")
@@ -183,6 +183,6 @@ while True:
         view_transactions()
     else:
         print("Invalid option. Please choose a valid command.")
-
+'''
 
 conn.close()
