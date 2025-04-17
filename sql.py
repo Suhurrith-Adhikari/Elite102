@@ -4,7 +4,7 @@ connection = mysql.connector.connect(user = 'root', database = 'elite102', passw
 
 cursor = connection.cursor()
 
-testQuery = ("SELECT * FROM test")
+testQuery = ("SELECT * FROM test WHERE id=1")
 
 cursor.execute(testQuery)
 
