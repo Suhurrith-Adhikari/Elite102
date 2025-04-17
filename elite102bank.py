@@ -48,17 +48,77 @@ def deposit_funds():
         cursor.execute(f"UPDATE users SET balance = {new_balance} WHERE name = '{name}' AND password = '{password}'")
         conn.commit()
         record_transaction(name, "deposit", amount)
-        print(f"Deposited ${amount:.2f}. New balance: ${new_balance:.2f}")
+        print(f"Deposited ${amount}. New balance: ${new_balance}")
     else:
         print("Invalid name or password.")
     cursor.close()
 
 def withdraw_funds():
+    name = input("Enter your name: ")
+    password = input("Enter your password: ")
+    amount = Decimal(input("Enter amount to withdraw: "))
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT balance FROM users WHERE name = '{name}' AND password = '{password}'")
+    result = cursor.fetchone()
+
+    if result:
+        if result[0] >= amount:
+            new_balance = result[0] - amount
+            cursor.execute(f" UPDATE users SET balance = {new_balance} WHERE name = '{name}' AND password = '{password}'")
+            conn.commit()
+            record_transaction(name, "withdrawal", amount) 
+            print(f"Withdrew ${amount}. New balance: ${new_balance}")
+        else:
+            print("Insufficient funds. Please try again")
+    cursor.close()
 
 
 def delete_account():
+    name = input("Enter your name: ")
+    password = input("Enter your password to confirm: ")
+    confirm = input("Are you sure you want to delete your account? (yes/no): ").lower()
+
+    if confirm == "yes":
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT * FROM users WHERE name = '{name}' AND password = '{password}'")
+        if cursor.fetchone():
+            cursor.execute(f"DELETE FROM users WHERE name = '{name}' AND password = '{password}'")
+            cursor.execute(f"DELETE FROM transactions WHERE name = '{name}'")
+            conn.commit()
+            print("Account deleted.")
+        else:
+            print("Invalid name or password.")
+        cursor.close()
+    else:
+        print("Account deletion cancelled.")
 
 def modify_account():
+    name = input("Enter your current name: ")
+    password = input("Enter your current password: ")
+    new_name = input("Enter new name (leave blank to keep unchanged): ")
+    new_email = input("Enter new email (leave blank to keep unchanged): ")
+    new_password = input("Enter new password (leave blank to keep unchanged): ")
+
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT * FROM users WHERE name = '{name}' AND password = '{password}'")
+    if cursor.fetchone():
+        updates = []
+        if new_name:
+            updates.append(f"name = '{new_name}'")
+        if new_email:
+            updates.append(f"email = '{new_email}'")
+        if new_password:
+            updates.append(f"password = '{new_password}'")
+        if updates:
+            update_query = ", ".join(updates)
+            cursor.execute(f" UPDATE users SET {update_query} WHERE name = '{name}' AND password = '{password}'")
+            conn.commit()
+            print("Account information updated.")
+        else:
+            print("No changes made.")
+    else:
+        print("Invalid name or password.")
+    cursor.close()
 
 
 def view_transactions():
@@ -73,7 +133,7 @@ def view_transactions():
         if not history:
             print("No transactions found.")
         for trans in history:
-            print(f"{trans[0].capitalize()}: ${trans[1]:.2f}")
+            print(f"{trans[0].capitalize()}: ${trans[1]}")
     else:
         print("Invalid name or password.")
     cursor.close()
