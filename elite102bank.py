@@ -14,8 +14,6 @@ def record_transaction(name, trans_type, amount):
         f"INSERT INTO transactions (name, type, amount) VALUES ('{name}', '{trans_type}', {amount})"
     )
 
-
-
 def create_account():
     name = input("Enter your name: ")
     email = input("Enter your email: ")
@@ -54,6 +52,13 @@ def deposit_funds():
     else:
         print("Invalid name or password.")
     cursor.close()
+
+def withdraw_funds():
+
+
+def delete_account():
+
+def modify_account():
 
 
 def view_transactions():
@@ -111,8 +116,10 @@ while True:
     elif (user_input == 5):
         delete_account()
     elif (user_input == 6):
+        print("Modify account details. ")
         modify_account()
     elif (user_input == 7):
+        print("View your old transactions. ")
         view_transactions()
     else:
         print("Invalid option. Please choose a valid command.")
