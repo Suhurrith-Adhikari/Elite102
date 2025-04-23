@@ -1,5 +1,7 @@
 from decimal import Decimal
+import tkinter as tk
 import mysql.connector
+
 
 conn = mysql.connector.connect(user = 'root', database = 'banking', password = 'g0SUHUg0')
 
@@ -10,9 +12,7 @@ def execute_query_edit(query):
     cursor.close()
 
 def record_transaction(name, trans_type, amount):
-    execute_query_edit(
-        f"INSERT INTO transactions (name, type, amount) VALUES ('{name}', '{trans_type}', {amount})"
-    )
+    execute_query_edit(f"INSERT INTO transactions (name, type, amount) VALUES ('{name}', '{trans_type}', {amount})")
 
 def create_account():
     name = input("Enter your name: ")
@@ -139,7 +139,7 @@ def view_transactions():
     cursor.close()
 
   
-''' - For CLI 
+
 while True:
     print("")
     print("Hello! Welcome to your C2C local bank!")
@@ -160,6 +160,7 @@ while True:
         print("Please enter a valid number. ")
         continue
 
+'''
     if (user_input == 0):
         print("Thank you for banking with us!")
         break
@@ -184,5 +185,4 @@ while True:
     else:
         print("Invalid option. Please choose a valid command.")
 '''
-
 conn.close()
