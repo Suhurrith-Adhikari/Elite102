@@ -3,11 +3,12 @@ from tkinter import messagebox
 from decimal import Decimal
 import mysql.connector
 
-//
+#created connection
 conn = mysql.connector.connect(user='root', database='banking', password='g0SUHUg0')
 
 current_user = {'name': None, 'password': None}
 
+#created run query to make it easy to run queries
 def run_query(query, fetch=False):
     cur = conn.cursor()
     cur.execute(query)
