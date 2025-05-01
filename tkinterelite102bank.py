@@ -3,6 +3,7 @@ from tkinter import messagebox
 from decimal import Decimal
 import mysql.connector
 
+//
 conn = mysql.connector.connect(user='root', database='banking', password='g0SUHUg0')
 
 current_user = {'name': None, 'password': None}
